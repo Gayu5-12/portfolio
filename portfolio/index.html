@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gayathri Devi K — Portfolio</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050810;
+    --deep: #0a0f1e;
+    --panel: #0f1628;
+    --border: #1e2a45;
+    --cyan: #00e5ff;
+    --violet: #7c3aed;
+    --aurora: #06ffa5;
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── Canvas starfield ── */
+  #starfield {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+
+  /* ── Floating orbs ── */
+  .orb {
+    position: fixed; border-radius: 50%; filter: blur(80px); opacity: .18;
+    pointer-events: none; z-index: 0; animation: drift 18s ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 500px; height: 500px; background: var(--violet); top: -150px; right: -100px; animation-duration: 20s; }
+  .orb-2 { width: 350px; height: 350px; background: var(--cyan); bottom: 100px; left: -80px; animation-duration: 15s; animation-delay: -6s; }
+  .orb-3 { width: 250px; height: 250px; background: var(--aurora); top: 40%; left: 40%; animation-duration: 25s; animation-delay: -10s; }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(40px, -40px) scale(1.1); }
+  }
+
+  /* ── Navbar ── */
+  .navbar {
+    background: rgba(5,8,16,.85) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+  }
+  .navbar-brand {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-link {
+    color: var(--muted) !important;
+    font-weight: 500; font-size: .85rem; letter-spacing: .05em;
+    text-transform: uppercase; transition: color .25s;
+  }
+  .nav-link:hover { color: var(--cyan) !important; }
+
+  /* ── Section wrapper ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── Hero ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 0 80px;
+  }
+  .hero-eyebrow {
+    font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--aurora); font-weight: 600;
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 1.2rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 32px; height: 1px; background: var(--aurora);
+  }
+  .hero-name {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: clamp(1rem, 8vw, 6.5rem);
+    font-weight: 800; line-height: .95;
+    background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--violet) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite alternate;
+  }
+  @keyframes shimmer {
+    from { filter: brightness(1); }
+    to   { filter: brightness(1.25); }
+  }
+  .hero-role {
+    font-size: 1.1rem; color: var(--muted); margin: 1.5rem 0 2rem;
+    letter-spacing: .03em;
+  }
+  .hero-role span { color: var(--cyan); font-weight: 600; }
+
+  /* 3-D card tilt container */
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform .6s cubic-bezier(.23,1,.32,1);
+  }
+  .tilt-card:hover { transform: rotateY(-8deg) rotateX(4deg) scale(1.02); }
+
+  /* ── Glassy card ── */
+  .glass {
+    background: rgba(15,22,40,.6);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    transition: border-color .3s, box-shadow .3s, transform .3s;
+  }
+  .glass:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 32px rgba(0,229,255,.12), 0 8px 48px rgba(0,0,0,.5);
+    transform: translateY(-4px);
+  }
+
+  /* ── Section headings ── */
+  .section-label {
+    font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--violet); font-weight: 600; margin-bottom: .5rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 3rem;
+  }
+  .section-title em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--cyan), var(--aurora));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  /* ── Skill badges ── */
+  .skill-badge {
+    display: inline-block;
+    padding: .35rem .9rem;
+    border-radius: 999px;
+    font-size: .78rem; font-weight: 600; letter-spacing: .04em;
+    border: 1px solid;
+    margin: 4px;
+    transition: transform .2s, box-shadow .2s;
+    cursor: default;
+  }
+  .skill-badge:hover { transform: translateY(-2px) scale(1.05); }
+  .badge-cyan  { color: var(--cyan);   border-color: var(--cyan);   background: rgba(0,229,255,.07); }
+  .badge-violet{ color: #a78bfa;       border-color: #7c3aed;       background: rgba(124,58,237,.07);}
+  .badge-green { color: var(--aurora); border-color: var(--aurora); background: rgba(6,255,165,.07); }
+  .badge-pink  { color: #f472b6;       border-color: #db2777;       background: rgba(219,39,119,.07);}
+
+  /* ── Timeline (Education / Internship) ── */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 8px; bottom: 8px;
+    width: 1px; background: linear-gradient(to bottom, var(--cyan), var(--violet));
+  }
+  .timeline-item { position: relative; margin-bottom: 2rem; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2.38rem; top: 8px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--cyan); box-shadow: 0 0 12px var(--cyan);
+  }
+  .timeline-year {
+    font-size: .72rem; letter-spacing: .15em; color: var(--cyan); font-weight: 600; margin-bottom: .3rem;
+  }
+  .timeline-title { font-weight: 700; font-size: 1rem; color: #fff; }
+  .timeline-sub { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+
+  /* ── Project cards ── */
+  .project-card {
+    position: relative; overflow: hidden;
+  }
+  .project-card .card-accent {
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .4s ease;
+  }
+  .project-card:hover .card-accent { transform: scaleX(1); }
+  .project-tag {
+    font-size: .68rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--violet);
+  }
+
+  /* ── Cert cards ── */
+  .cert-icon { font-size: 1.8rem; margin-bottom: .75rem; }
+
+  /* ── Coding stats ── */
+  .stat-box {
+    text-align: center; padding: 1.5rem 1rem;
+    border-radius: 12px;
+    background: rgba(0,229,255,.04);
+    border: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .stat-box:hover {
+    border-color: var(--cyan);
+    background: rgba(0,229,255,.09);
+    transform: translateY(-4px);
+  }
+  .stat-number {
+    font-family: 'Syne', sans-serif; font-size: 2.4rem;
+    font-weight: 800; color: var(--cyan); line-height: 1;
+  }
+  .stat-label { color: var(--muted); font-size: .8rem; margin-top: .4rem; }
+
+  /* ── Contact ── */
+  .contact-link {
+    display: flex; align-items: center; gap: .75rem;
+    padding: 1rem 1.25rem; border-radius: 10px;
+    color: var(--text); text-decoration: none;
+    background: rgba(15,22,40,.7); border: 1px solid var(--border);
+    transition: all .25s; font-size: .9rem;
+  }
+  .contact-link:hover {
+    border-color: var(--cyan); color: var(--cyan);
+    transform: translateX(6px);
+  }
+  .contact-link i { font-size: 1.1rem; width: 20px; text-align: center; color: var(--cyan); }
+
+  /* ── CTA button ── */
+  .btn-glow {
+    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    color: #fff; font-weight: 700; border: none; border-radius: 8px;
+    padding: .75rem 2rem; font-size: .9rem; letter-spacing: .05em;
+    position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-glow::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,.12);
+    opacity: 0; transition: opacity .25s;
+  }
+  .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,229,255,.3); color: #fff; }
+  .btn-glow:hover::after { opacity: 1; }
+
+  .btn-outline-glow {
+    background: transparent;
+    color: var(--cyan); font-weight: 700; border: 1px solid var(--cyan); border-radius: 8px;
+    padding: .75rem 2rem; font-size: .9rem; letter-spacing: .05em;
+    text-decoration: none; display: inline-block; transition: all .25s;
+  }
+  .btn-outline-glow:hover { background: rgba(0,229,255,.1); color: var(--cyan); }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+    color: var(--muted); font-size: .8rem;
+  }
+
+  /* ── Reveal animations ── */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Hero 3D scene ── */
+  .hero-3d {
+    perspective: 800px;
+    display: flex; justify-content: center; align-items: center;
+  }
+  .cube-wrapper {
+    transform-style: preserve-3d;
+    animation: rotateCube 12s linear infinite;
+    width: 120px; height: 120px; position: relative;
+  }
+  @keyframes rotateCube {
+    from { transform: rotateX(15deg) rotateY(0deg); }
+    to   { transform: rotateX(15deg) rotateY(360deg); }
+  }
+  .cube-face {
+    position: absolute; width: 120px; height: 120px;
+    border: 1.5px solid rgba(0,229,255,.4);
+    background: rgba(0,229,255,.04);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  .cf-front  { transform: translateZ(60px); }
+  .cf-back   { transform: rotateY(180deg) translateZ(60px); }
+  .cf-left   { transform: rotateY(-90deg) translateZ(60px); }
+  .cf-right  { transform: rotateY(90deg)  translateZ(60px); }
+  .cf-top    { transform: rotateX(90deg)  translateZ(60px); }
+  .cf-bottom { transform: rotateX(-90deg) translateZ(60px); }
+
+  /* ── Separator ── */
+  .sep { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 6rem 0; }
+
+  @media (max-width: 768px) {
+    .hero-name { font-size: 3rem; }
+    .cube-wrapper { display: none; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--void); }
+  ::-webkit-scrollbar-thumb { background: var(--violet); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- Stars canvas -->
+<canvas id="starfield"></canvas>
+
+<!-- Ambient orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ── Navbar ── -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#hero">GD/K</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span style="color:var(--cyan)"><i class="fas fa-bars"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto gap-3">
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+        <li class="nav-item"><a class="nav-link" href="#certifications">Certs</a></li>
+        <li class="nav-item"><a class="nav-link" href="#coding">Coding</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="hero-eyebrow">Computer Science Engineer</div>
+        <h1 class="hero-name">Gayathri <br>Devi K</h1>
+        <p class="hero-role">
+          Full-Stack Developer · <span>Cybersecurity Enthusiast</span> · AI/IoT Builder<br>
+          <small style="color:var(--muted);font-size:.85rem;">Sri Eshwar College of Engineering · B.E CCE · CGPA 8.00</small>
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#projects" class="btn-glow">View Projects</a>
+          <a href="#contact" class="btn-outline-glow">Get in Touch</a>
+        </div>
+      </div>
+      <div class="col-lg-5 hero-3d mt-5 mt-lg-0">
+        <div class="cube-wrapper">
+          <div class="cube-face cf-front">⚡</div>
+          <div class="cube-face cf-back">🔒</div>
+          <div class="cube-face cf-left">🌿</div>
+          <div class="cube-face cf-right">💻</div>
+          <div class="cube-face cf-top">🤖</div>
+          <div class="cube-face cf-bottom">🚀</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── About / Education ── -->
+<section id="about" class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-5 reveal">
+        <p class="section-label">Who I Am</p>
+        <h2 class="section-title">Building with<br><em>purpose & precision</em></h2>
+        <p style="color:var(--muted);line-height:1.8;font-size:.95rem;">
+          I'm a second-year B.E Computer and Communication Engineering student passionate about
+          creating technology that solves real problems — from emergency alert systems to fraud detection
+          apps and AI-driven agriculture. I combine strong fundamentals in DSA, OOP, and DBMS with
+          hands-on skills in full-stack development and cybersecurity.
+        </p>
+        <div class="mt-4 d-flex gap-3">
+          <div class="text-center">
+            <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);">8.00</div>
+            <div style="font-size:.75rem;color:var(--muted);">CGPA</div>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div class="text-center">
+            <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--violet);">3+</div>
+            <div style="font-size:.75rem;color:var(--muted);">Projects</div>
+          </div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div class="text-center">
+            <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--aurora);">6</div>
+            <div style="font-size:.75rem;color:var(--muted);">Certifications</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 reveal">
+        <p class="section-label">Education & Experience</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">2024 – 2028</div>
+            <div class="timeline-title">B.E Computer & Communication Engineering</div>
+            <div class="timeline-sub">Sri Eshwar College of Engineering · CGPA 8.00</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2022 – 2024</div>
+            <div class="timeline-title">Higher Secondary Certificate (HSC)</div>
+            <div class="timeline-sub">Velalar Vidyalayaa Senior Secondary School · 70%</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2020 – 2022</div>
+            <div class="timeline-title">Secondary School Leaving Certificate (SSLC)</div>
+            <div class="timeline-sub">Velalar Vidyalayaa Senior Secondary School · 81%</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">Internship</div>
+            <div class="timeline-title">MERN Stack Intern · Sri Eshwar College of Engineering</div>
+            <div class="timeline-sub">
+              Built a multi-trigger emergency alert system detecting distress via voice commands and gesture
+              inputs (shake, rapid taps), sending real-time GPS location to emergency contacts.
+              Designed with modular event-driven architecture.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Projects ── -->
+<section id="projects" class="py-5">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">What I've Built</p>
+      <h2 class="section-title">Featured <em>Projects</em></h2>
+    </div>
+    <div class="row g-4 mt-2">
+
+      <!-- Project 1 -->
+      <div class="col-md-4 reveal">
+        <div class="glass project-card tilt-card h-100 p-4">
+          <div class="card-accent"></div>
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🔍</div>
+          <div class="project-tag">Cybersecurity · 2025</div>
+          <h4 class="mt-2 mb-3" style="font-family:'Syne',sans-serif;color:#fff;">Username Enumeration</h4>
+          <p style="color:var(--muted);font-size:.87rem;line-height:1.75;">
+            A tool for cybersecurity analysts and digital investigators to verify username presence
+            across online platforms simultaneously — saving hours of manual lookup.
+          </p>
+          <div class="mt-3">
+            <span class="skill-badge badge-cyan">Python</span>
+            <span class="skill-badge badge-violet">OSINT</span>
+            <span class="skill-badge badge-green">Automation</span>
+          </div>
+          <a href="https://github.com/Gayu5-12/UsernameEnumeration-project" target="_blank"
+             class="btn-outline-glow mt-4 d-inline-block" style="padding:.5rem 1.25rem;font-size:.82rem;">
+            <i class="fab fa-github me-2"></i>GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="col-md-4 reveal">
+        <div class="glass project-card tilt-card h-100 p-4">
+          <div class="card-accent"></div>
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🏦</div>
+          <div class="project-tag">FinTech · 2025</div>
+          <h4 class="mt-2 mb-3" style="font-family:'Syne',sans-serif;color:#fff;">Bank Fraud Detection App</h4>
+          <p style="color:var(--muted);font-size:.87rem;line-height:1.75;">
+            Analyzes URLs, SMS, OTPs, and transaction screenshots to identify phishing attempts.
+            Returns trust scores via heuristic checks and content analysis, with quarantine options.
+          </p>
+          <div class="mt-3">
+            <span class="skill-badge badge-pink">ML/AI</span>
+            <span class="skill-badge badge-cyan">React</span>
+            <span class="skill-badge badge-violet">Security</span>
+          </div>
+          <a href="https://github.com/Gayu5-12/BankFraud-project" target="_blank"
+             class="btn-outline-glow mt-4 d-inline-block" style="padding:.5rem 1.25rem;font-size:.82rem;">
+            <i class="fab fa-github me-2"></i>GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="col-md-4 reveal">
+        <div class="glass project-card tilt-card h-100 p-4">
+          <div class="card-accent"></div>
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🌿</div>
+          <div class="project-tag">AI · IoT · 2025</div>
+          <h4 class="mt-2 mb-3" style="font-family:'Syne',sans-serif;color:#fff;">Intelligent Pesticide Sprinkling System</h4>
+          <p style="color:var(--muted);font-size:.87rem;line-height:1.75;">
+            AI + IoT system that detects plant infection levels via sensors and camera analysis,
+            auto-regulating pesticide spraying to reduce chemical overuse and lower farming costs.
+          </p>
+          <div class="mt-3">
+            <span class="skill-badge badge-green">IoT</span>
+            <span class="skill-badge badge-cyan">Python</span>
+            <span class="skill-badge badge-violet">AI/ML</span>
+          </div>
+          <a href="https://github.com/Gayu5-12/PesticideSprinkle-project" target="_blank"
+             class="btn-outline-glow mt-4 d-inline-block" style="padding:.5rem 1.25rem;font-size:.82rem;">
+            <i class="fab fa-github me-2"></i>GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Skills ── -->
+<section id="skills" class="py-5">
+  <div class="container">
+    <div class="row g-4 align-items-start">
+      <div class="col-lg-4 reveal">
+        <p class="section-label">Toolkit</p>
+        <h2 class="section-title">Skills &<br><em>Technologies</em></h2>
+        <p style="color:var(--muted);font-size:.9rem;line-height:1.8;">
+          From low-level C/C++ to full-stack web development and data science — here's what I bring to the table.
+        </p>
+      </div>
+      <div class="col-lg-8 reveal">
+        <div class="glass p-4">
+          <div class="mb-4">
+            <p style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:.75rem;">Programming</p>
+            <span class="skill-badge badge-cyan">C</span>
+            <span class="skill-badge badge-cyan">C++</span>
+            <span class="skill-badge badge-cyan">Python</span>
+            <span class="skill-badge badge-cyan">Java</span>
+          </div>
+          <div class="mb-4">
+            <p style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--violet);margin-bottom:.75rem;">Core Concepts</p>
+            <span class="skill-badge badge-violet">DSA</span>
+            <span class="skill-badge badge-violet">DBMS</span>
+            <span class="skill-badge badge-violet">OOP</span>
+          </div>
+          <div class="mb-4">
+            <p style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--aurora);margin-bottom:.75rem;">Web Technologies</p>
+            <span class="skill-badge badge-green">HTML</span>
+            <span class="skill-badge badge-green">CSS</span>
+            <span class="skill-badge badge-green">JavaScript</span>
+            <span class="skill-badge badge-green">React</span>
+            <span class="skill-badge badge-green">MongoDB</span>
+            <span class="skill-badge badge-green">MySQL</span>
+          </div>
+          <div class="mb-4">
+            <p style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:#f472b6;margin-bottom:.75rem;">Data Science</p>
+            <span class="skill-badge badge-pink">Pandas</span>
+            <span class="skill-badge badge-pink">NumPy</span>
+            <span class="skill-badge badge-pink">Matplotlib</span>
+          </div>
+          <div>
+            <p style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;">Tools</p>
+            <span class="skill-badge" style="color:#94a3b8;border-color:#334155;background:rgba(148,163,184,.07)">VSCode</span>
+            <span class="skill-badge" style="color:#94a3b8;border-color:#334155;background:rgba(148,163,184,.07)">GitHub</span>
+            <span class="skill-badge" style="color:#94a3b8;border-color:#334155;background:rgba(148,163,184,.07)">Git</span>
+            <span class="skill-badge" style="color:#94a3b8;border-color:#334155;background:rgba(148,163,184,.07)">Figma</span>
+            <span class="skill-badge" style="color:#94a3b8;border-color:#334155;background:rgba(148,163,184,.07)">Canva</span>
+            <span class="skill-badge" style="color:#94a3b8;border-color:#334155;background:rgba(148,163,184,.07)">WordPress</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Certifications ── -->
+<section id="certifications" class="py-5">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">Credentials</p>
+      <h2 class="section-title">Certifications &<br><em>Achievements</em></h2>
+    </div>
+    <div class="row g-4 mt-2">
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="glass p-4 h-100">
+          <div class="cert-icon">🏅</div>
+          <div style="font-size:.7rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">NPTEL · 2025</div>
+          <h6 style="color:#fff;font-weight:700;">C Programming</h6>
+          <p style="color:var(--muted);font-size:.82rem;margin-top:.4rem;">Successfully cleared the written exam</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="glass p-4 h-100">
+          <div class="cert-icon">☁️</div>
+          <div style="font-size:.7rem;color:var(--violet);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">IBM SkillBuild · 2025</div>
+          <h6 style="color:#fff;font-weight:700;">Cloud Computing Fundamentals</h6>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="glass p-4 h-100">
+          <div class="cert-icon">☕</div>
+          <div style="font-size:.7rem;color:var(--aurora);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">Scaler Topics · 2025</div>
+          <h6 style="color:#fff;font-weight:700;">Java Programming</h6>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="glass p-4 h-100">
+          <div class="cert-icon">🌐</div>
+          <div style="font-size:.7rem;color:#f472b6;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">Sololearn · 2025</div>
+          <h6 style="color:#fff;font-weight:700;">HTML, CSS, JS & Python</h6>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="glass p-4 h-100">
+          <div class="cert-icon">📊</div>
+          <div style="font-size:.7rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">Udemy · 2025</div>
+          <h6 style="color:#fff;font-weight:700;">Data Structures</h6>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4 reveal">
+        <div class="glass p-4 h-100">
+          <div class="cert-icon">🎓</div>
+          <div style="font-size:.7rem;color:var(--violet);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">IIT Bombay · 2024</div>
+          <h6 style="color:#fff;font-weight:700;">C++ & C Programming</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Coding Profile ── -->
+<section id="coding" class="py-5">
+  <div class="container">
+    <div class="text-center reveal mb-5">
+      <p class="section-label">Problem Solving</p>
+      <h2 class="section-title">Coding <em>Profile</em></h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-md-3 reveal">
+        <a href="https://leetcode.com" target="_blank" style="text-decoration:none;">
+          <div class="stat-box">
+            <div style="font-size:1.8rem;margin-bottom:.5rem;">🧩</div>
+            <div class="stat-number">70+</div>
+            <div class="stat-label">LeetCode Problems</div>
+          </div>
+        </a>
+      </div>
+      <div class="col-6 col-md-3 reveal">
+        <div class="stat-box">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">⭐</div>
+          <div class="stat-number" style="color:var(--violet);">Silver</div>
+          <div class="stat-label">CodeChef Badge</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 reveal">
+        <div class="stat-box">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">🔥</div>
+          <div class="stat-number" style="color:var(--aurora);">1000+</div>
+          <div class="stat-label">SkillRack Problems</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 reveal">
+        <div class="stat-box">
+          <div style="font-size:1.8rem;margin-bottom:.5rem;">💾</div>
+          <div class="stat-number" style="color:#f472b6;">SQL ★★</div>
+          <div class="stat-label">HackerRank Advanced</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Contact ── -->
+<section id="contact" class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 text-center reveal">
+        <p class="section-label">Let's Connect</p>
+        <h2 class="section-title">Open to <em>Opportunities</em></h2>
+        <p style="color:var(--muted);font-size:.95rem;margin-bottom:2.5rem;line-height:1.8;">
+          I'm always excited to collaborate on interesting projects, open-source contributions,
+          or internship opportunities. Drop me a message!
+        </p>
+        <div class="d-flex flex-column gap-3 text-start mx-auto" style="max-width:400px;">
+          <a href="tel:9865779903" class="contact-link">
+            <i class="fas fa-phone"></i> +91 9865779903
+          </a>
+          <a href="mailto:gayathridevi.k2024cce@sece.ac.in" class="contact-link">
+            <i class="fas fa-envelope"></i> gayathridevi.k2024cce@sece.ac.in
+          </a>
+          <a href="https://github.com/Gayu5-12" target="_blank" class="contact-link">
+            <i class="fab fa-github"></i> github.com/Gayu5-12
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="container">
+    <p style="color:var(--muted);">
+      Crafted with <span style="color:var(--cyan);">⚡</span> by <span style="color:var(--cyan);font-weight:600;">Gayathri Devi K</span>
+      &nbsp;·&nbsp; B.E CCE, Sri Eshwar College of Engineering
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ── Starfield ── */
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let W, H, stars = [];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+function mkStars() {
+  stars = Array.from({length: 200}, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    r: Math.random()*1.4+.3,
+    a: Math.random(),
+    s: Math.random()*.0015+.0005
+  }));
+}
+function drawStars() {
+  ctx.clearRect(0,0,W,H);
+  stars.forEach(s => {
+    s.a += s.s; if(s.a>1||s.a<0) s.s*=-1;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(226,232,240,${s.a*0.7})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+resize(); mkStars(); drawStars();
+window.addEventListener('resize', ()=>{ resize(); mkStars(); });
+
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting) {
+      setTimeout(()=> e.target.classList.add('visible'), i*80);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── 3-D tilt on mouse ── */
+document.querySelectorAll('.tilt-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left)/r.width  - .5;
+    const y = (e.clientY - r.top) /r.height - .5;
+    card.style.transform = `rotateY(${x*16}deg) rotateX(${-y*10}deg) scale(1.03)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'rotateY(0) rotateX(0) scale(1)';
+  });
+});
+
+/* ── Active nav highlight ── */
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 120) cur = s.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.style.color = l.getAttribute('href') === '#'+cur ? 'var(--cyan)' : '';
+  });
+});
+</script>
+</body>
+</html>
